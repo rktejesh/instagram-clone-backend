@@ -31,5 +31,4 @@ jobs:
         echo DB_USER =${{ secrets.DB_USER }} >> .env
         echo DB_PASS =${{ secrets.DB_PASS }} >> .env
     - run: npm ci
-    - run: npm run start --if-present
     - run: npm test
