@@ -26,7 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Configure environment variables
     - run: |
         touch .env
         echo DB_USER =${{ secrets.DB_USER }} >> .env
