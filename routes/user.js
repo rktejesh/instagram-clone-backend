@@ -35,7 +35,10 @@ router.post(
         const {
             username,
             email,
-            password
+            password,
+            firstName,
+            lastName,
+            profileImage
         } = req.body;
         try {
             let user = await User.findOne({
@@ -50,7 +53,10 @@ router.post(
             user = new User({
                 username,
                 email,
-                password
+                password,
+                firstName,
+                lastName,
+                profileImage
             });
 
             const salt = await bcrypt.genSalt(10);
@@ -86,10 +92,7 @@ router.post(
 router.post(
     "/login",
     [
-        check("email", "Please enter a valid email").isEmail(),
-        check("password", "Please enter a valid password").isLength({
-            min: 6
-        })
+        check("email", "invalid-email").isEmail(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -107,12 +110,12 @@ router.post(
             });
             if (!user)
                 return res.status(400).json({
-                    message: "User does not exist"
+                    message: "user-not-found"
                 });
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).json({
-                    message: "Password is incorrect"
+                    message: "wrong-password"
                 });
             };
             const payload = {
